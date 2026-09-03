@@ -1,0 +1,52 @@
+---
+import BrandMark from './BrandMark.astro';
+---
+
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="site-header" data-header>
+  <a href="/" class="logo"><BrandMark /></a><nav
+    aria-label="Navegação principal"
+  >
+    <a href="/#servicos">Serviços</a><a href="/portfolio">Portfólio</a><a
+      href="/#sobre">Sobre</a
+    ><a href="/#contato">Contato</a>
+  </nav><a class="header-cta" href="/#contato">Pedir orçamento <span>↗</span></a
+  ><button
+    class="menu-button"
+    type="button"
+    aria-expanded="false"
+    aria-controls="mobile-menu"
+    ><span></span><span></span><span class="sr-only">Abrir menu</span></button>
+</header>
+<div id="mobile-menu" class="mobile-menu" hidden>
+  <nav aria-label="Navegação mobile">
+    <a href="/">Início</a><a href="/#servicos">Serviços</a><a href="/portfolio"
+      >Portfólio</a
+    ><a href="/#sobre">Sobre</a><a href="/#contato">Contato</a>
+  </nav>
+</div>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.menu-button');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    if (menu) menu.hidden = open;
+    document.body.classList.toggle('menu-open', !open);
+  });
+  menu?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      button?.setAttribute('aria-expanded', 'false');
+      menu.hidden = true;
+      document.body.classList.remove('menu-open');
+    }),
+  );
+  addEventListener(
+    'scroll',
+    () =>
+      document
+        .querySelector('[data-header]')
+        ?.classList.toggle('scrolled', scrollY > 24),
+    { passive: true },
+  );
+</script>

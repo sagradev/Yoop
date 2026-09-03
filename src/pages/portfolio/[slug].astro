@@ -1,0 +1,154 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import {
+  getProjectBySlug,
+  getProjectSlugs,
+  getRelatedProjects,
+} from '@/lib/sanity/client';
+import { imageUrl } from '@/lib/sanity/image';
+export const getStaticPaths = (async () => {
+  const slugs = await getProjectSlugs();
+  return slugs.map(({ slug }) => ({ params: { slug } }));
+}) satisfies GetStaticPaths;
+const { slug } = Astro.params;
+const project = slug ? await getProjectBySlug(slug) : null;
+if (!project) return Astro.redirect('/404');
+const related = project.category
+  ? await getRelatedProjects(project.slug, project.category._id)
+  : [];
+const cover = imageUrl(project.coverImage, 1800, 1200);
+const og = imageUrl(project.ogImage || project.coverImage, 1200, 630);
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Início',
+      item: new URL('/', Astro.site || Astro.url.origin).toString(),
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Portfólio',
+      item: new URL('/portfolio', Astro.site || Astro.url.origin).toString(),
+    },
+    { '@type': 'ListItem', position: 3, name: project.title },
+  ],
+};
+---
+
+<BaseLayout
+  title={project.seoTitle || `${project.title} — Agência Yoop`}
+  description={project.seoDescription ||
+    project.shortDescription ||
+    `Case ${project.title} da Agência Yoop.`}
+  image={og}
+  canonical={`/portfolio/${project.slug}`}
+  ><script is:inline
+    type="application/ld+json"
+    set:html={JSON.stringify(breadcrumb)}
+  /><article class="case">
+    <header class="case-hero">
+      <p class="eyebrow">{project.category?.name || 'Projeto'}</p><h1>
+        {project.title}
+      </h1><div class="case-meta">
+        <span>{project.client || 'Agência Yoop'}</span>{
+          project.projectDate && (
+            <time datetime={project.projectDate}>
+              {new Date(`${project.projectDate}T00:00:00`).toLocaleDateString(
+                'pt-BR',
+                { year: 'numeric', month: 'long' },
+              )}
+            </time>
+          )
+        }
+      </div>
+    </header>{
+      cover && (
+        <img
+          class="case-cover"
+          src={cover}
+          alt={project.coverImage?.alt || `Capa de ${project.title}`}
+          width="1800"
+          height="1200"
+        />
+      )
+    }<section class="case-story">
+      <div>
+        <p class="eyebrow">O projeto</p><h2>
+          {project.shortDescription || project.title}
+        </h2>
+      </div><div>
+        {
+          project.description?.length ? (
+            <p>O conteúdo completo deste case está cadastrado no Sanity.</p>
+          ) : (
+            <p>
+              Detalhes do desafio, da solução e do processo podem ser
+              adicionados pela equipe no painel administrativo.
+            </p>
+          )
+        }{
+          project.services?.length && (
+            <ul>
+              {project.services.map((service) => (
+                <li>{service.name}</li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </section>{
+      project.gallery?.length && (
+        <section class="case-gallery">
+          {project.gallery.map((image, index) => {
+            const src = imageUrl(image, 1400);
+            return (
+              src && (
+                <img
+                  src={src}
+                  alt={
+                    image.alt ||
+                    `Imagem ${index + 1} do projeto ${project.title}`
+                  }
+                  width="1400"
+                  height="1050"
+                  loading="lazy"
+                />
+              )
+            );
+          })}
+        </section>
+      )
+    }{
+      related.length > 0 && (
+        <section class="related">
+          <>
+            <div class="section-heading">
+              <div>
+                <>
+                  <p class="eyebrow">Continue explorando</p>
+                  <h2>Outros trabalhos.</h2>
+                </>
+              </div>
+            </div>
+            <div class="project-grid">
+              {related.map((item, index) => (
+                <ProjectCard project={item} {index} />
+              ))}
+            </div>
+          </>
+        </section>
+      )
+    }<section class="case-cta">
+      <p class="eyebrow">Tem um projeto em mente?</p><h2>
+        Vamos colocar<br />essa ideia em movimento.
+      </h2><a class="button button--light" href="/#contato"
+        >Conversar com a Yoop <span>↗</span></a>
+    </section>
+  </article></BaseLayout
+>

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { getCategories, getProjects } from '@/lib/sanity/client';
+const [projects, categories] = await Promise.all([
+  getProjects(),
+  getCategories(),
+]);
+---
+
+<BaseLayout
+  title="Portfólio — Agência Yoop"
+  description="Conheça os trabalhos e projetos desenvolvidos pela Agência Yoop."
+  ><section class="page-hero">
+    <p class="eyebrow">Portfólio</p><h1>
+      Ideias que<br /><em>ganharam o mundo.</em>
+    </h1><p>
+      Projetos, campanhas e experiências construídas para marcas em movimento.
+    </p>
+  </section><section class="portfolio-page">
+    <div class="filters" role="group" aria-label="Filtrar por categoria">
+      <button
+        class="active"
+        type="button"
+        data-filter="todos"
+        aria-pressed="true">Todos</button
+      >{
+        categories.map((category) => (
+          <button
+            type="button"
+            data-filter={category.slug}
+            aria-pressed="false"
+          >
+            {category.name}
+          </button>
+        ))
+      }
+    </div><div class="project-grid" id="project-grid">
+      {projects.map((project, index) => <ProjectCard {project} {index} />)}
+    </div>{
+      !projects.length && (
+        <div class="empty-state">
+          <>
+            <span>PORTFÓLIO</span>
+            <h2>Nenhum projeto publicado ainda.</h2>
+            <p>
+              Quando a equipe publicar projetos no Sanity, eles aparecerão aqui
+              sem precisar alterar o código.
+            </p>
+            <a class="button button--ghost" href="/admin">
+              Abrir painel administrativo <span>↗</span>
+            </a>
+          </>
+        </div>
+      )
+    }
+  </section><script>
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-filter]')
+      .forEach((button) =>
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          document
+            .querySelectorAll<HTMLButtonElement>('[data-filter]')
+            .forEach((b) => {
+              const active = b === button;
+              b.classList.toggle('active', active);
+              b.setAttribute('aria-pressed', String(active));
+            });
+          document
+            .querySelectorAll<HTMLElement>('[data-category]')
+            .forEach((card) => {
+              card.hidden =
+                filter !== 'todos' && card.dataset.category !== filter;
+            });
+        }),
+      );
+  </script></BaseLayout
+>

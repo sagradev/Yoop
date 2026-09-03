@@ -1,0 +1,86 @@
+---
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import '@/styles/global.css';
+import { getServices, getSettings } from '@/lib/sanity/client';
+import { imageUrl } from '@/lib/sanity/image';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noindex?: boolean;
+}
+const settings = await getSettings();
+const services = await getServices();
+const {
+  title = settings.defaultSeoTitle || 'Agência Yoop',
+  description = settings.defaultSeoDescription ||
+    settings.institutionalDescription ||
+    'Agência Yoop',
+  image = imageUrl(settings.defaultOgImage, 1200, 630) || '/og.png',
+  canonical = Astro.url.pathname,
+  noindex = false,
+} = Astro.props;
+const canonicalUrl = new URL(canonical, Astro.site || Astro.url.origin);
+const imageUrlAbsolute = new URL(image, Astro.site || Astro.url.origin);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: settings.companyName || 'Agência Yoop',
+  url: (Astro.site || Astro.url.origin).toString(),
+  description: settings.institutionalDescription,
+  sameAs: [
+    settings.instagram,
+    ...(settings.socialLinks?.map((s) => s.url) || []),
+  ].filter(Boolean),
+};
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head
+    ><meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width"
+    /><title>{title}</title><meta
+      name="description"
+      content={description}
+    /><link rel="canonical" href={canonicalUrl} />{
+      noindex && <meta name="robots" content="noindex,nofollow" />
+    }<meta property="og:type" content="website" /><meta
+      property="og:title"
+      content={title}
+    /><meta property="og:description" content={description} /><meta
+      property="og:url"
+      content={canonicalUrl}
+    /><meta property="og:image" content={imageUrlAbsolute} /><meta
+      name="twitter:card"
+      content="summary_large_image"
+    /><meta name="twitter:title" content={title} /><meta
+      name="twitter:description"
+      content={description}
+    /><meta name="twitter:image" content={imageUrlAbsolute} /><link
+      rel="icon"
+      href="/favicon.svg"
+    /><meta name="theme-color" content="#11140f" /><script is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organization)}
+    /></head
+  ><body
+    ><Header /><main id="conteudo"><slot /></main><Footer
+      {settings}
+      {services}
+    /><script>
+      const observer = new IntersectionObserver(
+        (entries) =>
+          entries.forEach(
+            (e) => e.isIntersecting && e.target.classList.add('in-view'),
+          ),
+        { threshold: 0.12 },
+      );
+      document
+        .querySelectorAll('[data-reveal]')
+        .forEach((el) => observer.observe(el));
+    </script></body>
+</html>

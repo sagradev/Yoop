@@ -1,0 +1,45 @@
+---
+import BrandMark from './BrandMark.astro';
+import type { Service, SiteSettings } from '@/types';
+interface Props {
+  settings: SiteSettings;
+  services: Service[];
+}
+const { settings, services } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="footer-top">
+    <a href="/" aria-label="Início"><BrandMark /></a><p>
+      {settings.institutionalDescription}
+    </p>
+  </div><div class="footer-grid">
+    <div>
+      <span class="eyebrow">Navegue</span><a href="/">Início</a><a
+        href="/portfolio">Portfólio</a
+      ><a href="/#sobre">Sobre</a>
+    </div><div>
+      <span class="eyebrow">Serviços</span>{
+        services.length ? (
+          services.slice(0, 5).map((s) => <a href="/#servicos">{s.name}</a>)
+        ) : (
+          <p>Cadastre os serviços no CMS.</p>
+        )
+      }
+    </div><div>
+      <span class="eyebrow">Contato</span>{
+        settings.email && (
+          <a href={`mailto:${settings.email}`}>{settings.email}</a>
+        )
+      }{
+        settings.phone && <a href={`tel:${settings.phone}`}>{settings.phone}</a>
+      }<a
+        href={settings.instagram || 'https://www.instagram.com/agencia.yoop/'}
+        target="_blank"
+        rel="noreferrer">Instagram ↗</a>
+    </div>
+  </div><div class="footer-bottom">
+    <span>© {year} Agência Yoop.</span><span>Feito para mover marcas.</span>
+  </div>
+</footer>
