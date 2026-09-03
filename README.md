@@ -74,4 +74,4 @@ O segredo do Deploy Hook fica somente no painel do Sanity/provedor; nunca no có
 
 ## Conteúdo e assets pendentes
 
-Substitua no Sanity o logo provisório tipográfico pelas versões oficiais, confirme paleta/fontes, cadastre WhatsApp/e-mail, textos institucionais, serviços, categorias e projetos reais. Nenhum cliente, depoimento, prêmio, métrica ou resultado foi inventado.
+O site já utiliza o logo, a arara, os ícones sociais e as artes de serviços fornecidos pela Yoop. Cadastre no Sanity o WhatsApp/e-mail, textos institucionais, categorias e projetos reais; as versões de logo do CMS podem substituir os assets locais futuramente. Nenhum cliente, depoimento, prêmio, métrica ou resultado foi inventado.

@@ -1,5 +1,8 @@
 ---
 import BrandMark from './BrandMark.astro';
+import { Image } from 'astro:assets';
+import instagramIcon from '@/assets/yoop/instagram.png';
+import whatsappIcon from '@/assets/yoop/whatsapp.png';
 import type { Service, SiteSettings } from '@/types';
 interface Props {
   settings: SiteSettings;
@@ -7,6 +10,14 @@ interface Props {
 }
 const { settings, services } = Astro.props;
 const year = new Date().getFullYear();
+const whatsapp = settings.whatsapp?.replace(/\D/g, '');
+const confirmedServices = [
+  'Criação de posts',
+  'Gestão de redes sociais',
+  'Storymaker',
+  'Tráfego pago',
+  'Videomaker',
+];
 ---
 
 <footer>
@@ -21,11 +32,11 @@ const year = new Date().getFullYear();
       ><a href="/#sobre">Sobre</a>
     </div><div>
       <span class="eyebrow">Serviços</span>{
-        services.length ? (
-          services.slice(0, 5).map((s) => <a href="/#servicos">{s.name}</a>)
-        ) : (
-          <p>Cadastre os serviços no CMS.</p>
-        )
+        services.length
+          ? services.slice(0, 5).map((s) => <a href="/#servicos">{s.name}</a>)
+          : confirmedServices.map((service) => (
+              <a href="/#servicos">{service}</a>
+            ))
       }
     </div><div>
       <span class="eyebrow">Contato</span>{
@@ -37,7 +48,41 @@ const year = new Date().getFullYear();
       }<a
         href={settings.instagram || 'https://www.instagram.com/agencia.yoop/'}
         target="_blank"
-        rel="noreferrer">Instagram ↗</a>
+        rel="noreferrer">Instagram ↗</a
+      >
+      <div class="social-icons">
+        <a
+          href={settings.instagram || 'https://www.instagram.com/agencia.yoop/'}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Instagram da Agência Yoop"
+          ><Image
+            src={instagramIcon}
+            alt=""
+            width={44}
+            format="webp"
+            quality={82}
+          /></a
+        >
+        {
+          whatsapp && (
+            <a
+              href={`https://wa.me/${whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="WhatsApp da Agência Yoop"
+            >
+              <Image
+                src={whatsappIcon}
+                alt=""
+                width={44}
+                format="webp"
+                quality={82}
+              />
+            </a>
+          )
+        }
+      </div>
     </div>
   </div><div class="footer-bottom">
     <span>© {year} Agência Yoop.</span><span>Feito para mover marcas.</span>

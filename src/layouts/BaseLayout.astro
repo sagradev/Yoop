@@ -63,7 +63,8 @@ const organization = {
     /><meta name="twitter:image" content={imageUrlAbsolute} /><link
       rel="icon"
       href="/favicon.svg"
-    /><meta name="theme-color" content="#11140f" /><script is:inline
+    /><meta name="theme-color" content="#11140f" /><script
+      is:inline
       type="application/ld+json"
       set:html={JSON.stringify(organization)}
     /></head
@@ -82,5 +83,6 @@ const organization = {
       document
         .querySelectorAll('[data-reveal]')
         .forEach((el) => observer.observe(el));
-    </script></body>
+    </script></body
+  >
 </html>

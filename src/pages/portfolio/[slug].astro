@@ -48,7 +48,8 @@ const breadcrumb = {
     `Case ${project.title} da Agência Yoop.`}
   image={og}
   canonical={`/portfolio/${project.slug}`}
-  ><script is:inline
+  ><script
+    is:inline
     type="application/ld+json"
     set:html={JSON.stringify(breadcrumb)}
   /><article class="case">
@@ -148,7 +149,8 @@ const breadcrumb = {
       <p class="eyebrow">Tem um projeto em mente?</p><h2>
         Vamos colocar<br />essa ideia em movimento.
       </h2><a class="button button--light" href="/#contato"
-        >Conversar com a Yoop <span>↗</span></a>
+        >Conversar com a Yoop <span>↗</span></a
+      >
     </section>
   </article></BaseLayout
 >
