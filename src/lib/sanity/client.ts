@@ -27,6 +27,8 @@ export const fallbackSettings: SiteSettings = {
   companyName: 'Agência Yoop',
   institutionalDescription: 'Elevamos a sua empresa no mundo digital.',
   instagram: 'https://www.instagram.com/agencia.yoop/',
+  whatsapp: '556791626723',
+  phone: '+55 67 9162-6723',
   primaryCta: 'Vamos conversar',
   defaultSeoTitle: 'Agência Yoop — Criatividade, estratégia e resultado',
   defaultSeoDescription:
