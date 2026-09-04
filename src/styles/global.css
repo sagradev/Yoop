@@ -792,6 +792,9 @@ footer {
 .case-story li {
   padding: 0.5rem 0;
 }
+.case-album-link {
+  margin-top: 1.5rem;
+}
 .case-gallery {
   display: grid;
   grid-template-columns: 1fr 1fr;

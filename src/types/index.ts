@@ -1,4 +1,5 @@
 import type { PortableTextBlock } from 'sanity';
+import type { ImageMetadata } from 'astro';
 export interface SanityImage {
   asset?: { _ref?: string; url?: string };
   alt?: string;
@@ -29,8 +30,11 @@ export interface Project {
   client?: string;
   coverImage?: SanityImage;
   gallery?: SanityImage[];
+  localCover?: ImageMetadata;
+  localGallery?: ImageMetadata[];
   videos?: Array<{ title?: string; url: string }>;
   shortDescription?: string;
+  caseDescription?: string;
   description?: PortableTextBlock[];
   category?: Category;
   services?: Service[];

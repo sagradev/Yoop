@@ -5,7 +5,8 @@ import tailwindcss from '@tailwindcss/vite';
 const projectId = process.env.PUBLIC_SANITY_PROJECT_ID || 'placeholder';
 const dataset = process.env.PUBLIC_SANITY_DATASET || 'production';
 export default defineConfig({
-  site: process.env.SITE_URL || 'https://agencia-yoop.example.com',
+  site:
+    process.env.SITE_URL || 'https://agencia-yoop.mmpguty-5.chatgpt.site',
   output: 'static',
   integrations: [
     sanity({

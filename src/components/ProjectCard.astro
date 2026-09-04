@@ -1,6 +1,7 @@
 ---
 import type { Project } from '@/types';
 import { imageUrl } from '@/lib/sanity/image';
+import { Image } from 'astro:assets';
 interface Props {
   project: Project;
   index?: number;
@@ -16,7 +17,17 @@ const cover = imageUrl(project.coverImage, 1200, 900);
   <a href={`/portfolio/${project.slug}`}
     ><div class="project-media">
       {
-        cover ? (
+        project.localCover ? (
+          <Image
+            src={project.localCover}
+            alt={`Fotografia do projeto ${project.title}`}
+            widths={[560, 900, 1200]}
+            sizes="(max-width: 800px) 100vw, 62vw"
+            quality={86}
+            format="webp"
+            loading="lazy"
+          />
+        ) : cover ? (
           <img
             src={cover}
             alt={project.coverImage?.alt || `Capa do projeto ${project.title}`}
