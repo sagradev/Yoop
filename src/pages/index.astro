@@ -21,35 +21,43 @@ const [settings, services, projects] = await Promise.all([
   getFeaturedProjects(),
 ]);
 const whatsapp = settings.whatsapp?.replace(/\D/g, '');
+const whatsappMessage = encodeURIComponent(
+  'Olá! Vim pelo site da Agência Yoop e gostaria de conversar sobre um projeto.',
+);
 const contactHref = whatsapp
-  ? `https://wa.me/${whatsapp}`
+  ? `https://wa.me/${whatsapp}?text=${whatsappMessage}`
   : settings.email
     ? `mailto:${settings.email}`
     : '#contato';
 const confirmedServices = [
   {
     name: 'Criação de posts',
-    description: 'Design que chama atenção, conteúdo que conecta.',
+    description:
+      'Peças alinhadas à identidade da marca, prontas para informar, envolver e apoiar campanhas.',
     image: criacaoPost,
   },
   {
     name: 'Gestão de redes sociais',
-    description: 'Planejamento e cuidado contínuo com a presença da sua marca.',
+    description:
+      'Planejamento editorial, consistência de publicação e acompanhamento próximo da presença digital.',
     image: gestaoRedes,
   },
   {
     name: 'Storymaker',
-    description: 'Stories pensados para fazer a sua marca ser notada.',
+    description:
+      'Conteúdo vertical ágil para mostrar rotina, produtos e momentos importantes da marca.',
     image: storymaker,
   },
   {
     name: 'Tráfego pago',
-    description: 'Alcance as pessoas certas e converta com estratégia.',
+    description:
+      'Campanhas orientadas por objetivo, público e leitura contínua do desempenho.',
     image: trafegoPago,
   },
   {
     name: 'Videomaker',
-    description: 'Vídeos feitos para comunicar, envolver e vender.',
+    description:
+      'Captação e edição para apresentar produtos, contar histórias e fortalecer a comunicação.',
     image: videomaker,
   },
 ];
@@ -57,31 +65,41 @@ const confirmedServices = [
 
 <BaseLayout>
   <section class="hero">
-    <div class="hero-orbit" aria-hidden="true">
-      <span></span><span></span><Image
-        src={arara}
-        alt=""
-        width={520}
-        quality={88}
-        format="webp"
-        loading="eager"
-      />
-    </div><div class="hero-copy">
-      <p class="eyebrow">Marketing • Criação • Movimento</p><h1>
-        Marcas que<br /><em>se movem</em><br />chegam mais longe.
-      </h1><p class="hero-lead">
-        Criatividade com direção estratégica para elevar a sua empresa no mundo
-        digital.
-      </p><div class="hero-actions">
-        <a class="button button--primary" href="#trabalhos"
-          >Conheça nossos trabalhos <span>↗</span></a
-        ><a class="text-link" href={contactHref}
-          >Vamos conversar <span>→</span></a
-        >
+    <div class="page-shell hero-shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Marketing • Criação • Movimento</p><h1>
+          Marcas que<br /><em>se movem</em><br />chegam mais longe.
+        </h1><p class="hero-lead">
+          Conteúdo, social media e tráfego pago para marcas que querem aparecer
+          com consistência e transformar atenção em oportunidades.
+        </p><div class="hero-actions">
+          <a class="button button--primary" href="#trabalhos"
+            >Conheça nossos trabalhos <span>↗</span></a
+          ><a
+            class="text-link"
+            href={contactHref}
+            target={whatsapp ? '_blank' : undefined}
+            rel={whatsapp ? 'noreferrer' : undefined}
+            >Vamos conversar <span>→</span></a
+          >
+        </div><ul class="hero-services" aria-label="Principais frentes da Yoop">
+          <li>Conteúdo</li><li>Social media</li><li>Tráfego pago</li>
+        </ul>
+      </div><div class="hero-visual" aria-hidden="true">
+        <div class="hero-orbit">
+          <span></span><span></span><Image
+            src={arara}
+            alt=""
+            width={520}
+            quality={88}
+            format="webp"
+            loading="eager"
+          />
+        </div><div class="hero-stamp">
+          <span>CRIATIVIDADE • ESTRATÉGIA • RESULTADO • </span><b>↗</b>
+        </div>
       </div>
-    </div><div class="hero-stamp" aria-hidden="true">
-      <span>CRIATIVIDADE • ESTRATÉGIA • RESULTADO • </span><b>↗</b>
-    </div><div class="hero-index">01 — 05</div>
+    </div>
   </section>
   <div class="ticker" aria-label="Posicionamento da agência">
     <div>
@@ -90,7 +108,7 @@ const confirmedServices = [
     </div>
   </div>
   <section id="trabalhos" class="work-section">
-    <div class="section-heading" data-reveal>
+    <div class="page-shell"><div class="section-heading" data-reveal>
       <div>
         <p class="eyebrow">Portfólio em destaque</p><h2>
           Trabalho bom<br />fala <em>alto.</em>
@@ -120,10 +138,14 @@ const confirmedServices = [
           </>
         </div>
       )
-    }
+    }<div class="proof-row" data-reveal>
+      <article><span>01</span><h3>Estratégia conectada</h3><p>Conteúdo e mídia trabalham na mesma direção.</p></article>
+      <article><span>02</span><h3>Produção com identidade</h3><p>Cada entrega respeita o momento e a linguagem da marca.</p></article>
+      <article><span>03</span><h3>Contato direto</h3><p>Alinhamento próximo do briefing à publicação.</p></article>
+    </div></div>
   </section>
   <section id="servicos" class="services-section">
-    <div class="section-intro" data-reveal>
+    <div class="page-shell"><div class="section-intro" data-reveal>
       <p class="eyebrow">O que fazemos</p><h2>
         Estratégia na cabeça.<br /><em>Criação na veia.</em>
       </h2><p>
@@ -163,10 +185,10 @@ const confirmedServices = [
               </article>
             ))
       }
-    </div>
+    </div></div>
   </section>
   <section id="sobre" class="about-section">
-    <div class="about-graphic" aria-hidden="true">
+    <div class="page-shell about-shell"><div class="about-graphic" aria-hidden="true">
       <Image
         src={logo}
         alt=""
@@ -183,14 +205,18 @@ const confirmedServices = [
           settings.institutionalDescription ||
             'Elevamos a sua empresa no mundo digital.'
         }
-      </p><p class="editable-note">
-        O posicionamento completo, a filosofia e a forma de trabalhar podem ser
-        atualizados pela equipe no painel administrativo.
-      </p>
-    </div>
+      </p><p>
+        A Yoop conecta estratégia, conteúdo e produção para transformar ideias
+        em uma presença digital clara, consistente e reconhecível.
+      </p><ul class="about-pillars">
+        <li><span>01</span> Direção antes da execução</li>
+        <li><span>02</span> Conteúdo com personalidade</li>
+        <li><span>03</span> Acompanhamento próximo</li>
+      </ul>
+    </div></div>
   </section>
   <section class="process-section">
-    <div class="section-heading">
+    <div class="page-shell"><div class="section-heading">
       <div>
         <p class="eyebrow">Nosso movimento</p><h2>
           Do primeiro insight<br />à evolução.
@@ -234,31 +260,84 @@ const confirmedServices = [
           </li>
         ))
       }
-    </ol>
+    </ol></div>
+  </section>
+  <section class="faq-section">
+    <div class="page-shell faq-shell">
+      <div class="section-intro" data-reveal>
+        <p class="eyebrow">Perguntas frequentes</p><h2>Antes de começar.</h2><p>
+          Respostas diretas para você entender como um projeto ganha movimento
+          com a Yoop.
+        </p>
+      </div><div class="faq-list">
+        <details data-reveal>
+          <summary>Como começamos um projeto?<span>+</span></summary><p>
+            Você compartilha seu objetivo e o momento da marca. Depois disso,
+            alinhamos escopo, entregas, prazos e os próximos passos.
+          </p>
+        </details><details data-reveal>
+          <summary>Posso contratar apenas um serviço?<span>+</span></summary><p>
+            Sim. A proposta pode contemplar uma frente específica ou combinar
+            serviços de acordo com a necessidade do projeto.
+          </p>
+        </details><details data-reveal>
+          <summary>Como funciona a aprovação de conteúdo?<span>+</span></summary><p>
+            O fluxo de aprovação é definido no início. Assim, a marca acompanha
+            as entregas e valida o conteúdo antes da publicação.
+          </p>
+        </details><details data-reveal>
+          <summary>O investimento em anúncios está incluído?<span>+</span></summary><p>
+            A verba das plataformas é definida separadamente do serviço de
+            gestão, conforme o objetivo e o alcance desejado.
+          </p>
+        </details>
+      </div>
+    </div>
   </section>
   <section id="contato" class="contact-section">
-    <div class="contact-orbit" aria-hidden="true"></div><Image
-      class="contact-bird"
-      src={araraFundo}
-      alt=""
-      width={440}
-      format="webp"
-      quality={84}
-      loading="lazy"
-    /><p class="eyebrow">Bora tirar a ideia do papel?</p><h2>
-      Seu próximo projeto<br />pode começar <em>agora.</em>
-    </h2><a
-      class="button button--light"
-      href={contactHref}
-      target={whatsapp ? '_blank' : undefined}
-      rel={whatsapp ? 'noreferrer' : undefined}
-      >{settings.primaryCta || 'Vamos conversar'} <span>↗</span></a
-    >{
-      !whatsapp && !settings.email && (
-        <p class="contact-note">
-          Cadastre WhatsApp ou e-mail no Sanity para ativar este contato.
-        </p>
-      )
-    }
+    <div class="page-shell contact-shell"><div class="contact-copy">
+      <div class="contact-orbit" aria-hidden="true"></div><Image
+        class="contact-bird"
+        src={araraFundo}
+        alt=""
+        width={440}
+        format="webp"
+        quality={84}
+        loading="lazy"
+      /><p class="eyebrow">Bora tirar a ideia do papel?</p><h2>
+        Seu próximo projeto<br />pode começar <em>agora.</em>
+      </h2><p>
+        Conte brevemente o que você precisa. Ao enviar, a conversa será aberta
+        diretamente no WhatsApp da Yoop.
+      </p><a
+        class="text-link contact-direct"
+        href={contactHref}
+        target={whatsapp ? '_blank' : undefined}
+        rel={whatsapp ? 'noreferrer' : undefined}
+        >Prefere ir direto ao WhatsApp? <span>↗</span></a
+      >
+    </div><form class="brief-form" id="brief-form">
+      <div class="field-row"><label>Seu nome<input name="nome" autocomplete="name" required /></label><label>Empresa<input name="empresa" autocomplete="organization" /></label></div>
+      <label>Serviço de interesse<select name="servico" required><option value="">Selecione</option><option>Gestão de redes sociais</option><option>Criação de posts</option><option>Storymaker</option><option>Tráfego pago</option><option>Videomaker</option><option>Projeto integrado</option></select></label>
+      <label>O que você quer colocar em movimento?<textarea name="objetivo" rows="4" required></textarea></label>
+      <button class="button button--dark" type="submit">Enviar briefing <span>↗</span></button><small>Seus dados não são armazenados neste site.</small>
+    </form></div>
   </section>
+  <script is:inline define:vars={{ whatsapp }}>
+    const briefForm = document.querySelector('#brief-form');
+    briefForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const data = new FormData(briefForm);
+      const message = [
+        'Olá! Vim pelo site da Agência Yoop.',
+        `Meu nome é ${data.get('nome')}.`,
+        data.get('empresa') ? `Empresa: ${data.get('empresa')}.` : '',
+        `Serviço de interesse: ${data.get('servico')}.`,
+        `Objetivo: ${data.get('objetivo')}`,
+      ].filter(Boolean).join('\n');
+      if (whatsapp) {
+        window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+      }
+    });
+  </script>
 </BaseLayout>
